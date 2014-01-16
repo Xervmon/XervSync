@@ -1,4 +1,4 @@
-InstanceSync, Resource Cloning
+XervSync, Resource Cloning
 ##############################
 :date: 2013-11-16
 :tags: migrate, clone, sync, rackspace, aws, hpcloud

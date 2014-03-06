@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<title>Backup</title>
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/green-theme/jquery-ui-1.10.3.min.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/jstree/style.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/common.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/editdialog.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/customized.css" />
+
+    <script type="text/javascript" src="scripts/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui-1.10.3.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.watermark.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.jstree.js"></script>
+    <script type="text/javascript" src="scripts/json2.js"></script>
+    <script type="text/javascript" src="scripts/config.js"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/editdialog.js"></script>
+    <script type="text/javascript" src="scripts/edituri.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/customized.js"></script>
+    <script type="text/javascript" src="scripts/hideShowPassword.min.js"></script>
+
+
+    <script id="backup-item-template" type="text/x-jquery-tmpl">
+            <div id="backup-${ID}" class="main-backup-entry">
+                <div class="backup-details">
+                    <div class="caption-text">${Name}</div>
+                    <ul class="hint-text">
+                        <li class="hint-text-caption">Source</li>
+                        <li class="source-size">${Metadata.SourceSizeString}</li>
+                    </ul>
+                    <ul class="hint-text">
+                        <li class="hint-text-caption">Backup</li>
+                        <li class="target-size">${Metadata.TargetSizeString}</li>
+                    </ul>
+                    <ul class="action-links">
+                        <li class="first" id="backup-details-run-${ID}">Backup</li>
+                        <li id="backup-details-restore-${ID}">Restore</li>
+                        <li id="backup-details-edit-${ID}">Edit</li>
+                        <li class="last" id="backup-details-delete-${ID}">Delete</li>
+                    </ul>
+                </div>
+                <div class="backup-progress">
+                    <div class="progress-area">
+                    <div class="${ProgressIconClass}"></div>
+                    <div class="in-progress main-progress-text">${ProgressText}</div>
+                    </div>
+                </div>
+            </div>
+    </script>
+
+</head>
+<body>
+
+    <div id="main-topbar">
+        <div id="main-appname">DUPLICATI</div>
+
+        <ul class="main-shortcuts">
+            <li id="main-donate" class="main-icon-donate"></li>
+            <li id="main-control" class="main-icon-pause"></li>
+            <li id="main-settings" class="main-icon-settings"></li>
+        </ul>
+
+        <ul id="main-control-menu" class="menu">
+            <li>Settings..</li>
+            <li class="menu-sep"></li>
+            <li>Pause ...</li>
+            <li>Throttle ...</li>
+            <li class="menu-sep"></li>
+            <li>About ...</li>
+        </ul>
+    </div>
+
+    <div id="main-bottombar">
+        <a href="http://www.duplicati.com" target="_blank">Version 2.0.1 is available</a>
+    </div>
+
+    <div id="main-list">
+        <div id="main-list-container">
+            <div id="backup-1" class="main-backup-entry first">
+                <div class="backup-details">
+                    <div class="caption-text">My Music to Backify.com</div>
+                    <ul class="hint-text">
+                        <li class="hint-text-caption">Source</li>
+                        <li class="source-size">12.56 GB</li>
+                    </ul>
+                    <ul class="hint-text">
+                        <li class="hint-text-caption">Backup</li>
+                        <li class="target-size">14.31 GB</li>
+                    </ul>
+                    <ul class="action-links">
+                        <li class="first">Backup</li>
+                        <li>Restore</li>
+                        <li>Edit</li>
+                        <li class="last">Delete</li>
+                    </ul>
+                </div>
+                <div class="backup-progress">
+                    <div class="progress-area">
+                    <div class="in-progress main-progress-text">512 files remanining</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="backup-2" class="main-backup-entry">
+                <div class="backup-details">
+                    <div class="caption-text">My Photos to SkyDrive</div>
+                    <ul class="hint-text">
+                        <li class="hint-text-caption">Source</li>
+                        <li class="source-size">12.56 GB</li>
+                    </ul>
+                    <ul class="hint-text">
+                        <li class="hint-text-caption">Backup</li>
+                        <li class="target-size">14.31 GB</li>
+                    </ul>
+                    <ul class="action-links">
+                        <li class="first">Backup</li>
+                        <li>Restore</li>
+                        <li>Edit</li>
+                        <li class="last">Delete</li>
+                    </ul>
+                </div>
+                <div class="backup-progress">
+                    <div class="progress-area">
+                    <div class="main-icon-hourglass"></div>
+                    <div class="main-progress-text">#1 in queue</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="backup-3" class="main-backup-entry last">
+                <div class="backup-details">
+                    <div class="caption-text">My Videos to Amazon S3</div>
+                    <ul class="hint-text">
+                        <li class="hint-text-caption">Source</li>
+                        <li class="source-size">12.56 GB</li>
+                    </ul>
+                    <ul class="hint-text">
+                        <li class="hint-text-caption">Backup</li>
+                        <li class="target-size">14.31 GB</li>
+                    </ul>
+                    <ul class="action-links">
+                        <li class="first">Backup</li>
+                        <li>Restore</li>
+                        <li>Edit</li>
+                        <li class="last">Delete</li>
+                    </ul>
+                </div>
+                <div  class="backup-progress">
+                    <div class="progress-area">
+                    <div class="main-icon-clock"></div>
+                    <div class="main-progress-text">2013-11-02 5.00pm</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="main-newbackup">
+                <div class="main-icon-plus"></div>
+                <div class="main-button-add-text">Add new backup</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-dialog" class="modal-dialog" title="Loading...">
+        <div id="main-list-loader-icon" class="large-loader-icon"></div>
+    </div>
+
+    <div id="edit-dialog" class="modal-dialog tabs edit-dialog" title="Edit backup">
+        <ul>
+            <li><a href="#edit-tab-general">General</a></li>
+            <li><a href="#edit-tab-sourcedata">Source Data</a></li>
+            <li><a href="#edit-tab-target">Target</a></li>
+            <li><a href="#edit-tab-schedule">Schedule</a></li>
+            <li><a href="#edit-tab-options">Options</a></li>
+        </ul>
+
+        <form id="edit-dialog-form">
+            <div id="edit-tab-general">
+                <div class="edit-dialog-label">Name of backup</div>
+                <input type="text" name="backup-name" id="backup-name" class="ui-corner-all" />
+
+                <div class="edit-dialog-label">Backup labels</div>
+                <input type="text" name="backup-labels" id="backup-labels" class="ui-corner-all" />
+        
+                <div id="encryption-area">
+                    <div class="input-hint">
+                        It is recommended to encrypt all backups that are stored on remote servers
+                    </div>
+
+                    <div class="edit-dialog-label">Encryption method</div>
+                    <select type="text" name="encryption-method" id="encryption-method" class="ui-corner-all">
+                        <option>AES 256 bit</option>
+                        <option>GNU Privacy Guard</option>
+                    </select>
+
+                    <div id="encryption-password-area">
+                        <div class="edit-dialog-label">Encryption passphrase</div>
+                        <input type="password" name="encryption-password" id="encryption-password" value="" class="ui-corner-all" /><br/>
+
+                        <div class="clearfix"></div>
+                        <div class="edit-dialog-label" id="repeat-password-label">Repeat passphrase</div>
+                        <div class="field-group">
+                            <input type="password" name="repeat-password" id="repeat-password" value="" class="ui-corner-all" /><br/>
+                            <div id="toggle-show-password" class="action-link action-link-input">Show passwords</div>
+                            <div id="generate-password" class="action-link action-link-input backup-password-generate">Generate password</div>
+                            <div class="clearfix"></div>
+
+                            <div id="backup-password-strength" class="backup-password-strength" title="Time it takes to break this password">Strength: unknown</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="edit-tab-sourcedata">
+                <input id="source-folder-list" name="source-folder-list" type="hidden" />
+                <div id="source-folder-entry">
+                    <input id="source-folder-path-text" type="text" />
+                    <div id="source-folder-path-add" class="button">Add</div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div id="source-folder-paths" class="empty">
+                <div id="source-folder-droptarget"></div>
+                    <div id="source-folder-paths-hint" class="hint-text">To add files and folders, drag and drop them here. <br/>(Double click also works)</div>
+                    <!-- <div class="source-folder">/opt/local/data</div> -->
+                </div>
+
+                <div id="source-folder-browser">
+                </div>
+
+            </div>
+
+            <div id="edit-tab-target">
+                <div class="input-hint">
+                The connection URI defines where your backup is stored. It contains everything that is required to connect to your storage.
+                </div>
+                <div class="edit-dialog-label">Connection URI</div>
+                <div class="field-group">
+                    <input type="text" name="backup-uri" id="backup-uri" value="" class="ui-corner-all" />
+                    <div  id="edit-connection-uri-link" class="action-link">Create connection URI</div>
+                </div>
+            </div>
+
+            <div id="edit-tab-schedule">
+                <input id="use-scheduled-run" type="checkbox" />
+                <div>Run regularly at the specified times</div>
+                <div class="hint-line-last">If a date was missed, the job will run as soon as possible.</div>
+
+                <div class="clearfix"></div>
+
+                <div class="edit-dialog-label">Next time</div>
+                <div class="input-wrapper">
+                    <input type="time" id="next-run-time" name="next-run-time"/>
+                    <input type="date" id="next-run-date" name="next-run-date" />
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="edit-dialog-label">Run again every</div>
+                <div class="input-wrapper">
+                    <input type="number" id="repeat-run-number" name="repeat-run-number"/>
+                    <select id="repeat-run-multiplier" name="repeat-run-multiplier">
+                        <option value="h">hours</option>
+                        <option value="D">days</option>
+                        <option value="W">weeks</option>
+                        <option value="M">months</option>
+                        <option value="Y">years</option>
+                        <option value="">custom</option>
+                    </select>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="edit-dialog-label">Allowed days</div>
+                <div class="input-wrapper">
+                    <input type="checkbox" class="simple-checkbox" id="allow-day-mon" name="allow-day-mon" />
+                    <div class="days-label">Mon</div>
+                    <input type="checkbox" class="simple-checkbox" id="allow-day-tue" name="allow-day-tue" />
+                    <div class="days-label">Tue</div>
+                    <input type="checkbox" class="simple-checkbox" id="allow-day-wed" name="allow-day-wed" />
+                    <div class="days-label">Wed</div>
+                    <input type="checkbox" class="simple-checkbox" id="allow-day-thu" name="allow-day-thu" />
+                    <div class="days-label">Thu</div>
+                    <input type="checkbox" class="simple-checkbox" id="allow-day-fri" name="allow-day-fri" />
+                    <div class="days-label">Fri</div>
+                    <input type="checkbox" class="simple-checkbox" id="allow-day-sat" name="allow-day-sat" />
+                    <div class="days-label">Sat</div>
+                    <input type="checkbox" class="simple-checkbox" id="allow-day-sun" name="allow-day-sun" />
+                    <div class="days-label">Sun</div>
+                </div>
+
+            </div>
+
+            <div id="edit-tab-options">
+                <div class="hint-line-last">Duplicati splits backups into smaller files. A smaller size (e.g. 10MB) is recommended for slow and unstable connections. A larger size (e.g. 200MB) is recommended in LAN environments</div>
+
+                <div class="clearfix"></div>
+
+                <div class="edit-dialog-label">Max backup file size</div>
+                <div class="input-wrapper">
+                    <input type="number" id="dblock-size-number" name="dblock-size-number" />
+                    <select id="dblock-size-multiplier" name="dblock-size-multiplier">
+                        <option value="kb">KByte</option>
+                        <option value="mb">MByte</option>
+                        <option value="gb">GByte</option>
+                        <option value="tb">TByte</option>
+                    </select>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="edit-dialog-label">Options</div>
+                <textarea id="backup-options" rows="4" name="backup-options"></textarea>
+
+            </div>
+        </form>
+    </div>
+
+    <div id="connection-uri-dialog" class="modal-dialog edit-dialog" style="display: none" title="Connection URI">
+        <form id="edit-uri-form">
+            <div class="edit-dialog-label">Target Type</div>
+            <div class="field-group">
+                <select id="backend-type" name="backend-type"></select>
+                <input type="checkbox" id="server-use-ssl" name="server-use-ssl" value="use-ssl"/><div class="checkbox-label" id="server-use-ssl-label" >Use SSL</div>
+            </div>
+
+            <div class="edit-dialog-label" id="server-name-and-port-label">Server &amp; Port</div>
+            <div class="field-group" id="server-name-and-port">
+                <input type="text" name="server-name" id="server-name" value="" class="text ui-widget-content ui-corner-all" />
+                <input type="text" name="server-port" id="server-port" value="" class="text ui-widget-content ui-corner-all" />
+            </div>
+
+            <div class="edit-dialog-label" id="server-path-label">Path on server</div>
+            <input type="text" name="server-path" id="server-path" class="text ui-widget-content ui-corner-all" />
+
+            <div id="server-username-and-password">
+                <div id="server-username-label" class="edit-dialog-label">Username</div>
+                <input type="text" name="server-username" id="server-username" class="text ui-widget-content ui-corner-all" />
+
+                <div id="server-password-label" class="edit-dialog-label">Password</div>
+                <input type="password" name="server-password" id="server-password" class="text ui-widget-content ui-corner-all" />
+            </div>
+
+            <div class="edit-dialog-label" id="server-options-label">Options</div>
+            <textarea id="server-options" name="server-options"></textarea>
+
+            <div id="edit-dialog-extensions"></div>
+        </form>
+    </div>
+
+</body>
+</html>
